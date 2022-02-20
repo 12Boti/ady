@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Ady versek</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js@9.0.1/public/assets/styles/choices.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/choices.js@9.0.1/public/assets/scripts/choices.min.js"></script>
+</head>
+
+<body style="font-family: Arial;">
+    <p id="q" style="white-space: pre-wrap; width: 20em; margin: auto;"></p>
+    <div style="width: 30em; margin: auto;"><select id="sel"></select></div>
+    <div style="width: 5em; margin: auto;"><button onclick="submit()">OK</button></div>
+    <script>
+        const as = [
+            ["Góg és Magóg fia vagyok én...",
+                `Góg és Magóg fia vagyok én,
+Hiába döngetek kaput, falat
+S mégis megkérdem tőletek:
+Szabad-e sírni a Kárpátok alatt?
+
+Verecke híres útján jöttem én,
+Fülembe még ősmagyar dal rivall,
+Szabad-e Dévénynél betörnöm
+Új időknek új dalaival?
+
+Fülembe forró ólmot öntsetek
+Legyek az új, az énekes Vazul,
+Ne halljam az élet új dalait,
+Tiporjatok reám durván, gazul.
+
+De addig sírva, kínban, mit se várva
+Mégiscsak száll új szárnyakon a dal
+S ha elátkozza százszor Pusztaszer,
+Mégis győztes, mégis új és magyar.`],
+            ["Héja-nász az avaron",
+                `Útra kelünk. Megyünk az Őszbe,
+Vijjogva, sírva, kergetőzve,
+Két lankadt szárnyú héja-madár.
+Új rablói vannak a Nyárnak,
+Csattognak az új héja-szárnyak,
+Dúlnak a csókos ütközetek.
+Szállunk a Nyárból, űzve szállunk,
+Valahol az Őszben megállunk,
+Fölborzolt tollal, szerelmesen.
+Ez az utolsó nászunk nékünk:
+Egymás husába beletépünk
+S lehullunk az őszi avaron.`],
+            ["Lédával a bálban",
+                `Sikolt a zene, tornyosul, omlik
+Parfümös, boldog, forró, ifju pára
+S a rózsakoszorús ifjak, leányok
+Rettenve néznek egy fekete párra.
+„Kik ezek?” S mi bús csöndben belépünk.
+Halál-arcunk sötét fátyollal óvjuk
+S hervadt, régi rózsa-koszoruinkat
+A víg teremben némán szerte-szórjuk.
+Elhal a zene s a víg teremben
+Téli szél zúg s elalusznak a lángok.
+Mi táncba kezdünk és sírva, dideregve
+Rebbennek szét a boldog mátka-párok.`],
+            ["Őrizem a szemed",
+                `Már vénülő kezemmel
+Fogom meg a kezedet,
+Már vénülő szememmel
+Őrizem a szemedet.
+
+Világok pusztulásán
+Ősi vad, kit rettenet
+Űz, érkeztem meg hozzád
+S várok riadtan veled.
+
+Már vénülő kezemmel
+Fogom meg a kezedet,
+Már vénülő szememmel
+Őrizem a szemedet.
+
+Nem tudom, miért, meddig
+Maradok meg még neked,
+De a kezedet fogom
+S őrizem a szemedet.`],
+            ["Cifra szűrömmel betakarva",
+                `Szerettem volna, hogyha untat
+Bolondulása a földnek,
+Ez a nagy vér-lakodalom,
+Cifra szűrömmel betakarni
+Vihar elől magunkat.
+
+Be jónak indult ez a játék,
+D közben szinte mi kedvünkért
+Kitört az égi háború,
+Fájva, sivítva és cikkázva
+Átok ez vagy ajándék?
+
+Küldöm a szivemet szivedre
+Óráiban borzalomnak,
+Hátha mégis odatalál
+Ahol egyetlen helyet kaphat
+Hol tán mégis pihenne.
+
+Be, nagyon rettent ez a várás
+Be, méltatlan is a mi sorsunk;
+Tépett és véres milliók,
+Két szép ember kiket roszkor vett
+Elő a megkívánás.`],
+            ["Nézz, Drágám, kincseimre",
+                `Nézz, Drágám, kincseimre,
+Lázáros szomorú nincseimre
+Nézz egy hű, igaz élet sorsára
+S őszülő tincseimre.
+
+Nem mentem erre-arra,
+Búsan büszke voltam a magyarra
+S ezért is, hajh, sokszor kerültem
+Sok hajhra, jajra, bajra.
+
+Jó voltam szerelemben:
+Egy Isten sem gondolhatná szebben,
+Ahogy én gyermekűl elgondoltam
+S nézz lázban, vérben, sebben.
+Ha te nem jöttél vóna,
+Ma már tán panaszló szám se szólna
+S gunyolói hivő életeknek
+Raknak a koporsóba.
+
+Nézz, Drágám, rám szeretve,
+Téged találtalak menekedve
+S ha van még kedv ez aljas világban:
+Te vagy a szivem kedve.
+
+Nézz, Drágám, kincseimre,
+Lázáros, szomorú nincseimre
+S legyenek neked sötétek, ifjak:
+Őszülő tincseimre.`],
+            ["A Tisza-parton",
+                `Jöttem a Gangesz partjairól,
+Hol álmodoztam déli verőn,
+A szívem egy nagy harangvirág
+S finom remegések: az erőm.
+
+Gémes kút, malom alja, fokos,
+Sivatag, lárma, durva kezek,
+Vad csókok, bambák, álom-bakók.
+A Tisza-parton mit keresek?`],
+            ["A magyar Ugaron",
+                `Elvadult tájon gázolok:
+Ős, buja földön dudva, muhar.
+Ezt a vad mezőt ismerem,
+Ez a magyar Ugar.
+
+Lehajlok a szent humuszig:
+E szűzi földön valami rág.
+Hej, égig-nyúló giz-gazok,
+Hát nincsen itt virág?
+
+Vad indák gyűrűznek körül,
+Míg a föld alvó lelkét lesem,
+Régmult virágok illata
+Bódít szerelmesen.
+
+Csönd van. A dudva, a muhar,
+A gaz lehúz, altat, befed
+S egy kacagó szél suhan el
+A nagy Ugar felett.`],
+            ["A Szajna partján",
+                `A Szajna partján él a Másik,
+Az is én vagyok, én vagyok,
+Két életet él két alakban
+Egy halott.
+
+A Duna partján
+Démonok űznek csúfot velem,
+A Szajna partján álmokba von be
+Százféle, szűz szerelem.
+
+Rákacag Páris
+S a boldog Másik visszakacag,
+Itt röhejes mámorba kerget
+Vijjogó, éji csapat.
+
+Ott szebb vagyok, nemesebb, hősebb,
+Sejtelem-csók minden dalom,
+Szent Cecilia hajol lelkemre
+Álmatagon.
+
+A Duna partján
+Céda lányhoz hajt durva öröm,
+A bor ad álmot
+S a poharamat összetöröm.
+
+Ott: ring lelkem muzsikás alkony
+Szent zsivaján
+S úgy csókolom meg az életet,
+Mint orkideát a Léda haján.`],
+            ["A Halál rokona",
+                `Én a Halál rokona vagyok,
+Szeretem a tűnő szerelmet,
+Szeretem megcsókolni azt,
+Aki elmegy.
+
+Szeretem a beteg rózsákat,
+Hervadva ha vágynak, a nőket,
+A sugaras, a bánatos
+Ősz-időket.
+
+Szeretem a szomorú órák
+Kisértetes, intő hivását,
+A nagy Halál, a szent Halál
+Játszi mását.
+
+Szeretem az elutazókat,
+Sírókat és fölébredőket
+S dér-esős, hideg hajnalon
+A mezőket.
+Szeretem a fáradt lemondást,
+Könnyetlen sírást és a békét,
+Bölcsek, poéták, betegek
+Menedékét.
+
+Szeretem azt, aki csalódott,
+Aki rokkant, aki megállott,
+Aki nem hisz, aki borus:
+A világot.
+
+Én a Halál rokona vagyok,
+Szeretem a tűnő szerelmet,
+Szeretem megcsókolni azt,
+Aki elmegy.`],
+            ["A magyar Messiások",
+                `Sósabbak itt a könnyek
+S a fájdalmak is mások.
+Ezerszer Messiások
+A magyar Messiások.
+
+Ezerszer is meghalnak
+S üdve nincs a keresztnek,
+Mert semmit se tehettek,
+Óh, semmit se tehettek.`],
+            ["Harc a Nagyúrral",
+                `Megöl a disznófejű Nagyúr,
+Éreztem, megöl, ha hagyom,
+Vigyorgott rám és ült meredten:
+Az aranyon ült, az aranyon,
+Éreztem, megöl, ha hagyom.
+
+Sertés testét, az undokot, én
+Simogattam. Ő remegett.
+„Nézd meg, ki vagyok” (súgtam neki)
+S meglékeltem a fejemet,
+Agyamba nézett s nevetett.
+
+(Vad vágyak vad kalandorának
+Tart talán?) S térdre hulltam ott.
+A zúgó Élet partján voltunk,
+Ketten voltunk, alkonyodott:
+„Add az aranyod, aranyod.”
+
+„Engem egy pillanat megölhet,
+Nekem már várni nem szabad,
+Engem szólítnak útra, kéjre
+Titokzatos hívó szavak,
+Nekem már várni nem szabad.”
+
+„A te szivedet serte védi,
+Az én belsőm fekély, galád.
+Az én szivem mégis az áldott:
+Az Élet marta fel, a Vágy.
+Arany kell. Mennem kell tovább.”
+„Az én jachtomra vár a tenger,
+Ezer sátor vár énreám,
+Idegen nap, idegen balzsam,
+Idegen mámor, új leány,
+Mind énreám vár, énreám.”
+
+„Az egész élet bennem zihál,
+Minden, mi új, felém üget,
+Szent zűrzavar az én sok álmom,
+Neked minden álmod süket,
+Hasítsd ki hát aranyszügyed.”
+
+Már ránk szakadt a bús, vak este.
+Én nyöszörögtem. A habok
+Az üzenetet egyre hozták:
+Várunk. Van-e már aranyod?
+Zúgtak a habok, a habok.
+
+És összecsaptunk. Rengett a part,
+Husába vájtam kezemet,
+Téptem, cibáltam. Mindhiába.
+Aranya csörgött. Nevetett.
+Nem mehetek, nem mehetek.
+
+Ezer este múlt ezer estre,
+A vérem hull, hull, egyre hull,
+Messziről hívnak, szólongatnak
+És mi csak csatázunk vadul:
+Én s a disznófejű Nagyúr.`],
+            ["A Sion-hegy alatt",
+                `Borzolt, fehér Isten-szakállal,
+Tépetten, fázva fújt, szaladt
+Az én Uram, a rég feledett,
+Nyirkos, vak, őszi hajnalon,
+Valahol Sion-hegy alatt.
+
+Egy nagy harang volt a kabátja,
+Piros betükkel foltozott,
+Bús és kopott volt az öreg Úr,
+Paskolta, verte a ködöt,
+Rórátéra harangozott.
+
+Lámpás volt reszkető kezemben
+És rongyolt lelkemben a Hit
+S eszemben a régi ifjuság:
+Éreztem az Isten-szagot
+S kerestem akkor valakit.
+
+Megvárt ott, a Sion-hegy alján
+S lángoltak, égtek a kövek.
+Harangozott és simogatott,
+Bekönnyezte az arcomat,
+Jó volt, kegyes volt az öreg.
+
+Ráncos, vén kezét megcsókoltam
+S jajgatva törtem az eszem:
+„Hogy hívnak téged, szép, öreg Úr,
+Kihez mondottam sok imát?
+Jaj, jaj, jaj, nem emlékezem.”
+
+„Halottan visszajöttem hozzád
+Én, az életben kárhozott.
+Csak tudnék egy gyermeki imát.”
+Ő nézett reám szomorún
+S harangozott, harangozott.
+
+„Csak nagyszerű nevedet tudnám.”
+Ő várt, várt s aztán fölszaladt.
+Minden lépése zsoltár-ütem:
+Halotti zsoltár. S én ülök
+Sírván a Sion-hegy alatt.`],
+            ["Sem utódja, sem boldog őse…",
+                `Sem utódja, sem boldog őse,
+Sem rokona, sem ismerőse
+Nem vagyok senkinek,
+Nem vagyok senkinek.
+
+Vagyok, mint minden ember: fenség,
+Észak-fok, titok, idegenség,
+Lidérces, messze fény,
+Lidérces, messze fény.
+
+De, jaj, nem tudok így maradni,
+Szeretném magam megmutatni,
+Hogy látva lássanak,
+Hogy látva lássanak.
+
+Ezért minden: önkínzás, ének:
+Szeretném, hogyha szeretnének
+S lennék valakié,
+Lennék valakié.`],
+            ["Kocsi-út az éjszakában",
+                `Milyen csonka ma a Hold,
+Az éj milyen sivatag, néma,
+Milyen szomoru vagyok én ma,
+Milyen csonka ma a Hold.
+
+Minden Egész eltörött,
+Minden láng csak részekben lobban,
+Minden szerelem darabokban,
+Minden Egész eltörött.
+
+Fut velem egy rossz szekér,
+Utána mintha jajszó szállna,
+Félig mély csönd és félig lárma,
+Fut velem egy rossz szekér.`],
+            ["Emlékezés egy nyár-éjszakára",
+                `Az Égből dühödt angyal dobolt
+Riadót a szomoru Földre,
+Legalább száz ifjú bomolt,
+Legalább száz csillag lehullott,
+Legalább száz párta omolt:
+Különös,
+Különös nyár-éjszaka volt.
+Kigyúladt öreg méhesünk,
+Legszebb csikónk a lábát törte,
+Álmomban élő volt a holt,
+Jó kutyánk, Burkus, elveszett
+S Mári szolgálónk, a néma,
+Hirtelen hars nótákat dalolt:
+Különös,
+Különös nyár-éjszaka volt.
+Csörtettek bátran a senkik
+És meglapult az igaz ember
+S a kényes rabló is rabolt:
+Különös,
+Különös nyár-éjszaka volt.
+Tudtuk, hogy az ember esendő
+S nagyon adós a szeretettel:
+Hiába, mégis furcsa volt
+Fordulása élt s volt világnak.
+Csúfolódóbb sohse volt a Hold:
+Sohse volt még kisebb az ember,
+Mint azon az éjszaka volt:
+Különös,
+Különös nyár-éjszaka volt.
+Az iszonyuság a lelkekre
+Kaján örömmel ráhajolt,
+Minden emberbe beköltözött
+Minden ősének titkos sorsa,
+Véres, szörnyű lakodalomba
+Részegen indult a Gondolat,
+Az Ember büszke legénye,
+Ki, íme, senki béna volt:
+Különös,
+Különös nyár-éjszaka volt.
+Azt hittem, akkor azt hittem,
+Valamely elhanyagolt Isten
+Életre kap s halálba visz
+S, íme, mindmostanig itt élek
+Akként, amaz éjszaka kivé tett
+S Isten-várón emlékezem
+Egy világot elsüllyesztő,
+Rettenetes éjszakára:
+Különös,
+Különös nyár-éjszaka volt.`],
+            ["Krónikás ének 1918-ból",
+                `Iszonyú dolgok mostan történűlnek,
+Népek népekkel egymás ellen gyűlnek,
+Bűnösök és jók egyént keserűlnek
+S ember hitei kivált meggyöngűlnek.
+
+Ember hajléki már rég nem épűlnek,
+Szivek, tűzhelyek, agyak de sérűlnek,
+Kik olvasandják ezt, majd elképűlnek,
+Ha ő szivükben hív érzések fűlnek.
+
+Jaj, hogy szép álmok ígyen elszörnyűlnek,
+Jaj, hogy mindenek igába görgyűlnek,
+Jaj, hogy itt most már nem is lelkesűlnek,
+S mégis idegen pokol lángján sűlnek.
+
+Itt most vér-folyók partból kitérűlnek,
+Itt most már minden leendők gyérűlnek,
+Itt régi átkok mélyesre mélyűlnek:
+Jaj, mik készűlnek, jaj, mik is készűlnek?
+
+Hegedűs fickók többet hegedűlnek,
+Olcsó cécókon ezerek vegyűlnek,
+Rút zsívány-arcok ékesre derűlnek
+S íjjedt szelidek szökve menekűlnek.
+
+Lámpás, szép fejek sután megszédűlnek,
+Emberségesek igen megréműlnek,
+Ifjak kik voltak, hoppra megvénűlnek
+S a Föld lakói dög-halmokba dűlnek.
+
+Bús kedvű anyák keservesen szűlnek,
+Labdázó fiúk halálba merűlnek,
+Ős, szép kemencék sorjukban elhűlnek
+S kedvelt szűzeink uccára kerűlnek.
+
+S szegény emberek még sem csömörűlnek,
+Buták, fáradtak és néha örűlnek,
+Szegény emberek mindent kitörűlnek
+Emlékeikből, mert csak ölnek, ölnek.
+
+Szegény emberek ölnek és csak ölnek
+S láz-álmaikban boldogan békűlnek,
+S reggelre kelvén megint megdűhűlnek,
+Kárhoznak, halnak, vadakká törpűlnek.
+
+Halál-mézőkön bitófák épűlnek,
+Nagy tetejükre kövér varjak űlnek,
+Unják a hullát el- s vissza-röpűlnek,
+De az emberek meg nem csömörűlnek.`]
+        ];
+        const m = new Map(as.map(v => [v[0], v[1].split(/\n\n/).map(s => s.split(/\n/))]));
+        const titles = Array.from(m.keys());
+        const choices = new Choices("#sel", {
+            choices: titles.map(k => { return { value: k, label: k, selected: false, disabled: false }; })
+        });
+        const tt = document.querySelector("#q");
+        function ridx(l) {
+            return Math.floor(Math.random() * l);
+        }
+        let correct;
+        function next() {
+            const p = titles[ridx(titles.length)];
+            correct = p;
+            const vs = m.get(p);
+            const v = vs[ridx(vs.length)];
+            const i = ridx(v.length - 1);
+            tt.textContent = v[i] + "\n" + v[i + 1];
+        }
+        next();
+        function submit() {
+            const c = choices.getValue(true);
+            if (c !== correct) {
+                alert("Rossz válasz! Helyes: " + correct)
+            }
+            next();
+        }
+    </script>
+</body>
+
+</html>
